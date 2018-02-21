@@ -6,24 +6,11 @@ package Calculadora;
  */
 public class RPN {
 	private String commando;
-	private	NodoPila arriba;
-	
-	public void pushPila(double nuevo_dato)
-	{
-		NodoPila nuevo_nodo = new NodoPila(nuevo_dato, arriba);
-		arriba = nuevo_nodo;
-	}
-	
-	public double popPila()
-	{
-		double dato_arriba = arriba.dato;
-		arriba = arriba.abajo;
-		return dato_arriba;
-	}
+	private Pila pila;
 	
 	public RPN(String commando)
 	{
-		arriba = null;
+		pila = new Pila(null);
 		this.commando = commando;
 	}
 	
@@ -31,9 +18,9 @@ public class RPN {
 	{
 		double a, b;
 		int j;
+		Character operation = ' ';
 		
 		for(int i = 0; i < commando.length(); i++) {
-			//si es un digito
 			if(Character.isDigit(commando.charAt(i))) {
 				double numero;
 				
@@ -43,40 +30,59 @@ public class RPN {
 					temp = temp + String.valueOf(commando.charAt(i));
 				}
 				numero = Double.parseDouble(temp);
-				pushPila(numero);
+				pila.pushPila(numero);
 			} else if(commando.charAt(i) == '+') {
-				b = popPila();
-				a = popPila();
-				pushPila(a + b);
+				operation = '+';
 			} else if(commando.charAt(i) == '-') {
-				b = popPila();
-				a = popPila();
-				pushPila(a - b);
+				operation = '-';
 			} else if(commando.charAt(i) == '*') {
-				b = popPila();
-				a = popPila();
-				pushPila(a * b);
+				operation = '*';
 			} else if(commando.charAt(i) == '/') {
-				b = popPila();
-				a = popPila();
-				pushPila(a / b);
+				operation = '/';
 			} else if(commando.charAt(i) == '^') {
-				b = popPila();
-				a = popPila();
-				pushPila(Math.pow(a, b));
+				operation = '^';
 			} else if(commando.charAt(i) == '%') {
-				b = popPila();
-				a = popPila();
-				pushPila(a % b);
+				operation = '%';
 			} else if(commando.charAt(i) != ' '){
 				throw new IllegalArgumentException();
 			}
 		}
 		
-		double val = popPila();
-		if(arriba != null) {
-			throw new IllegalArgumentException();
+		switch(operation) {
+			case '+':
+				b = pila.popPila();
+				a = pila.popPila();
+				pila.pushPila(a + b);
+				break;
+			case '-': 
+				b = pila.popPila();
+				a = pila.popPila();
+				pila.pushPila(a - b);
+				break;
+			case '*': 
+				b = pila.popPila();
+				a = pila.popPila();
+				pila.pushPila(a * b);
+				break;
+			case '/': 
+				b = pila.popPila();
+				a = pila.popPila();
+				pila.pushPila(a / b);
+				break;
+			case '^': 
+				b = pila.popPila();
+				a = pila.popPila();
+				pila.pushPila(Math.pow(a, b));
+				break;
+			case '%': 
+				b = pila.popPila();
+				a = pila.popPila();
+				pila.pushPila(a % b);
+				break;
+			default: throw new IllegalArgumentException();
 		}
+		
+		double val = pila.popPila();
 		
 		return val;
 	}

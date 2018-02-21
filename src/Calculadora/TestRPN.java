@@ -13,8 +13,12 @@ public class TestRPN {
 				System.out.println("Fin de programa");
 				break;
 			} else {
-				RPN calc = new RPN(linea);
-				System.out.printf("El resultado es %f\n", calc.resultado());
+				try {
+					RPN calc = new RPN(linea);
+					System.out.printf("El resultado es %f\n", calc.resultado());
+				} catch (Exception e) {
+					System.out.printf("Error\n");
+				}
 			}
 		}
 	}
