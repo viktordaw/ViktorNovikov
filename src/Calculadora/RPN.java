@@ -1,19 +1,29 @@
 package Calculadora;
 
-/*
+/**
  * Clase RPN es un clase que calcula de notación inversa polaca que 
- * utiliza una pila. 
+ * utiliza una pila.
+ * @version 1.0 21/02/2018
+ * @author Viktor Novikov
  */
 public class RPN {
 	private String commando;
 	private Pila pila;
 	
+	/**
+	 * Constructor
+	 * @param commando
+	 */
 	public RPN(String commando)
 	{
 		pila = new Pila(null);
 		this.commando = commando;
 	}
 	
+	/**
+	 * Resultado de la operación
+	 * @return
+	 */
 	public double resultado()
 	{
 		double a, b;
